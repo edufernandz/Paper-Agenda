@@ -86,22 +86,30 @@ export default function App() {
     return `${year}-${month}-${day}`;
   }, []);
 
-  const [tasks, setTasks] = useState<Task[]>([
-    {
-      id: "1",
-      text: "Reunión con el equipo",
-      date: getTodayDateString(),
-      time: "09:00",
-      isPrivate: false,
-    },
-    {
-      id: "2",
-      text: "Cita médica personal",
-      date: getTodayDateString(),
-      time: "14:30",
-      isPrivate: true,
-    },
-  ]);
+  const [tasks, setTasks] = useState<Task[]>(() => {
+  const savedTasks = localStorage.getItem('agendaTasks');
+  if (savedTasks) {
+    return JSON.parse(savedTasks);
+  } else {
+    // Si no hay nada guardado, usa estas tareas de ejemplo
+    return [
+      {
+        id: "1",
+        text: "Reunión con el equipo",
+        date: new Date().toISOString().split('T')[0],
+        time: "09:00",
+        isPrivate: false,
+      },
+      {
+        id: "2",
+        text: "Cita médica personal",
+        date: new Date().toISOString().split('T')[0],
+        time: "14:30",
+        isPrivate: true,
+      },
+    ];
+  }
+});
 
   // Referencias simplificadas
   const containerRef = useRef<HTMLDivElement>(null);
