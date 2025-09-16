@@ -25,7 +25,9 @@ import { Users } from "lucide-react";
 export default function App() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [visibleDate, setVisibleDate] = useState(new Date());
-  const [agendaTitle, setAgendaTitle] = useState("Mi Agenda");
+  const [agendaTitle, setAgendaTitle] = useState(() => {
+  return localStorage.getItem('agendaTitle') || "Mi Agenda";
+});
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const [userProfile, setUserProfile] = useState<UserProfile>({
     id: "user-1",
@@ -33,20 +35,27 @@ export default function App() {
     email: "usuario@demo.com",
     avatarColor: "bg-blue-500"
   });
-  const [settings, setSettings] = useState<UserSettings>({
-    headerType: "year",
-    textColor: "amber",
-    backgroundColor: "cream",
-    fontFamily: "kalam",
-    isShared: false,
-    shareCode: undefined,
-    connectedUsers: [{
-      id: "owner",
-      name: "Tú",
-      color: "bg-green-500",
-      isOwner: true
-    }]
-  });
+  const [settings, setSettings] = useState<UserSettings>(() => {
+  const savedSettings = localStorage.getItem('agendaSettings');
+  if (savedSettings) {
+    return JSON.parse(savedSettings);
+  } else {
+    return {
+      headerType: "year",
+      textColor: "amber",
+      backgroundColor: "cream",
+      fontFamily: "kalam",
+      isShared: false,
+      shareCode: undefined,
+      connectedUsers: [{
+        id: "owner",
+        name: "Tú",
+        color: "bg-green-500",
+        isOwner: true
+      }]
+    };
+  }
+});
   const [moveTaskDialog, setMoveTaskDialog] = useState<{
     open: boolean;
     task: Task | null;
@@ -163,7 +172,19 @@ export default function App() {
       return () => clearTimeout(timer);
     }
   }, [allDays]);
+  
+useEffect(() => {
+  localStorage.setItem('agendaTasks', JSON.stringify(tasks));
+}, [tasks]);
 
+useEffect(() => {
+  localStorage.setItem('agendaTitle', agendaTitle);
+}, [agendaTitle]);
+
+useEffect(() => {
+  localStorage.setItem('agendaSettings', JSON.stringify(settings));
+}, [settings]);
+  
   // Cargar más días simplificado
   const loadMoreDays = useCallback(
     (direction: "before" | "after") => {
