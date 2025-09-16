@@ -1,15 +1,20 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale-1.0" />
 
-  <!DOCTYPE html>
-  <html lang="en">
-    <head>
-      <meta charset="UTF-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>Shared Agenda App</title>
-    </head>
+    <!-- === NUEVAS LÍNEAS PARA PANTALLA COMPLETA === -->
+    <link rel="manifest" href="/manifest.json" />
+    <!-- Esta es la línea más importante para iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <!-- === FIN DE NUEVAS LÍNEAS === -->
 
-    <body>
-      <div id="root"></div>
-      <script type="module" src="/src/main.tsx"></script>
-    </body>
-  </html>
-  
+    <title>Shared Agenda App</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
